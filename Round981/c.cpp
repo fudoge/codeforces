@@ -2,21 +2,32 @@
 
 using namespace std;
 
-int arr[10001];
 void solve() {
   int n;
   cin >> n;
-  vector<vector<int>> dp(n, vector<int>(2, 1e9));
-
+  vector<int> arr(n);
   for (int i = 0; i < n; ++i) {
     cin >> arr[i];
   }
+
+  for (int i = 1; i < n / 2; ++i) {
+    if (arr[i - 1] == arr[i] || arr[n - i - 1] == arr[n - i]) {
+      swap(arr[i], arr[n - i - 1]);
+    }
+  }
+
+  int ans = 0;
+  for (int i = 1; i < n; ++i) {
+    if (arr[i - 1] == arr[i])
+      ans++;
+  }
+  cout << ans << "\n";
 }
 
 int main(int argc, char *argv[]) {
   int t;
   cin >> t;
-  while (t-- > 0) {
+  while (t--) {
     solve();
   }
   return 0;
