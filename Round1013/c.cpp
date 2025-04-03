@@ -14,7 +14,7 @@ void solve() {
         cout << "-1\n";
         return;
     }
-    vector<int> a(n), freq(n + 1, 0);
+    vector<int> a(n);
     int offset = n - 3;
     for (int i = 0; i < n; i++) {
         int idx = (offset + i) % n;
