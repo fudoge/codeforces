@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
 
-#include <algorithm>
+#include <numeric>
 
 using namespace std;
 using ll = long long;
@@ -10,35 +10,35 @@ void solve() {
     ll n, k, x;
     cin >> n >> k >> x;
 
-    vector<int> a(n);
-    ll sumOfA = 0;
-
+    vector<ll> a(n);
     for (auto &i : a) {
         cin >> i;
-        sumOfA += i;
     }
 
-    ll div = x / sumOfA;
-
-    vector<int> c(n * 2);
-    for (int i = 0; i < n * 2; i++) {
-        c[i] = a[i % n];
+    if (accumulate(a.begin(), a.end(), 0ll) * k < x) {
+        cout << "0\n";
+        return;
     }
 
-    int decrementedX = x - (div * sumOfA);
-    ll ans = 0;
-    for (int i = 0; i < n; i++) {
-        int lb = lower_bound(c.begin() + i, c.begin() + i + n, decrementedX) -
-                 c.begin() - i;
+    ll l = 1, r = n * k;
+    while (l <= r) {
+        ll mid = (l + r) >> 1;
 
-        int d = 0;
-        int inc;
-        while ((inc = ((n * k) - (div * n + lb) + 1) - (d * n)) > 0) {
-            ans += inc;
-            d++;
+        ll aCount = (n * k - mid + 1) / n;
+        ll suff = (n * k - mid + 1) % n;
+        ll sum = aCount * accumulate(a.begin(), a.end(), 0ll);
+
+        for (int i = n - suff; i < n; i++) {
+            sum += a[i];
+        }
+
+        if (sum < x) {
+            r = mid - 1;
+        } else {
+            l = mid + 1;
         }
     }
-    cout << ans << "\n";
+    cout << r << "\n";
 }
 
 int main(int argc, char *argv[]) {
